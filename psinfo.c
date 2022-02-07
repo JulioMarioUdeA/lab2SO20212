@@ -22,20 +22,6 @@ void list_init(list_t *l)
     l->head = NULL;
 }
 
-void imprimir(char **infos, char **datos, FILE *reporte)
-{
-    FILE *salida = stdout;
-    if (reporte != NULL)
-    {
-        salida = reporte;
-    }
-    for (int i = 0; i < 6; i++)
-    {
-        fprintf(salida, "%s%s\n", infos[i], datos[i]);
-    }
-    fprintf(salida, "%s%s - %s\n", infos[6], datos[6], datos[7]);
-}
-
 /*
 This function realize the insert of an element on a list of type list_t
 list_t is a list of elements of type node_t
@@ -74,18 +60,47 @@ int list_nondup_end_insert(list_t *list, char **datos)
     }
     return count;
 }
-
+void imprimir(char **infos, char **datos, FILE *reporte, char *pid)
+{
+    FILE *salida = stdout;
+    if (reporte != NULL)
+    {
+        salida = reporte;
+    }
+    if (pid != NULL)
+    {
+        fprintf(salida, "\nPID: %s\n", pid);
+    }
+    for (int i = 0; i < 6; i++)
+    {
+        fprintf(salida, "%s%s\n", infos[i], datos[i]);
+    }
+    fprintf(salida, "%s%s - %s\n", infos[6], datos[6], datos[7]);
+}
 /*
 This function simply print the elements of the list
 */
-void display(list_t *list, char **infos, FILE *salida)
+void display(list_t *list, char **infos, FILE *salida, char **pids)
 {
     node_t *tmp;
     tmp = list->head;
-    while (tmp != NULL)
+    if (pids == NULL)
     {
-        imprimir(infos, tmp->datos, salida);
-        tmp = tmp->next;
+        while (tmp != NULL)
+        {
+            imprimir(infos, tmp->datos, salida, NULL);
+            tmp = tmp->next;
+        }
+    }
+    else
+    {
+        int i = 2;
+        while (tmp != NULL)
+        {
+            imprimir(infos, tmp->datos, salida, pids[i]);
+            i++;
+            tmp = tmp->next;
+        }
     }
 }
 
@@ -148,7 +163,12 @@ char **pillarDatos(char *ruta)
     FILE *archivo = fopen(ruta, "r");
     if (archivo == NULL)
     {
-        return NULL;
+        for (int i = 0; i < 8; i++)
+        {
+            datos[i] = (char *)malloc(10);
+            strcpy(datos[i], "no data");
+        }
+        return datos;
     }
 
     size_t len = 0;
@@ -261,12 +281,12 @@ int main(int argc, char *argv[])
                 {
                     printf("error: el fichero %s no se encuentra\n", ruta);
                     printf("use el comando ps aux para mirar PIDs validos\n");
-                    continue;
+                    // continue;
                 }
                 list_nondup_end_insert(&lista, datos);
             }
             printf("\n-- Informacion recolectada!\n");
-            display(&lista, infos, NULL);
+            display(&lista, infos, NULL, argv);
         }
         else if (strcmp(argv[1], "-r") == 0)
         {
@@ -295,12 +315,12 @@ int main(int argc, char *argv[])
                 {
                     printf("error: el fichero %s no se encuentra\n", ruta);
                     printf("use el comando ps aux para mirar PIDs validos\n");
-                    continue;
+                    // continue;
                 }
                 list_nondup_end_insert(&lista, datos);
             }
-            printf("\n-- reporte %s generado!\n",nombreArchivo);
-            display(&lista, infos, reporte);
+            printf("\n-- reporte %s generado!\n", nombreArchivo);
+            display(&lista, infos, reporte, argv);
         }
         else
         {
@@ -318,7 +338,7 @@ int main(int argc, char *argv[])
                 printf("use el comando ps aux para mirar PIDs validos\n");
                 exit(1);
             }
-            imprimir(infos, datos, NULL);
+            imprimir(infos, datos, NULL, NULL);
             exit(0);
         }
     }
