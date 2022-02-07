@@ -237,7 +237,8 @@ int main(int argc, char *argv[])
 
     if (argc == 1)
     {
-        printf("error: psinfo necesita por lo menos un argumento");
+        printf("error: psinfo necesita un argumento\n");
+        printf("\n./psinfo <PID>\nejemplo:\n./psinfo 104\n");
         exit(1);
     }
     else
@@ -246,7 +247,8 @@ int main(int argc, char *argv[])
         {
             if (argc < 3)
             {
-                printf("error: psinfo -l necesita argumentos");
+                printf("error: psinfo -l necesita argumentos\n");
+                printf("\n./psinfo -l <PID> <PID> ... <PID>\nejemplo:\n./psinfo -l 104 201 ... 102\n");
                 exit(1);
             }
             list_t lista;
@@ -257,19 +259,21 @@ int main(int argc, char *argv[])
                 char **datos = pillarDatos(ruta);
                 if (datos == NULL)
                 {
-                    printf("error: el fichero %s no se encuentra", ruta);
-                    exit(1);
+                    printf("error: el fichero %s no se encuentra\n", ruta);
+                    printf("use el comando ps aux para mirar PIDs validos\n");
+                    continue;
                 }
                 list_nondup_end_insert(&lista, datos);
             }
-            printf("\n-- Informacion recolectada!");
+            printf("\n-- Informacion recolectada!\n");
             display(&lista, infos, NULL);
         }
         else if (strcmp(argv[1], "-r") == 0)
         {
             if (argc < 3)
             {
-                printf("error: psinfo -r necesita argumentos");
+                printf("error: psinfo -r necesita argumentos\n");
+                printf("\n./psinfo -r <PID> <PID> ... <PID>\nejemplo:\n./psinfo -r 104 201 ... 102\n");
                 exit(1);
             }
             int lenNombres = numeroLetras(argv, argc); // psinfo-report-10898-1342.info
@@ -278,7 +282,7 @@ int main(int argc, char *argv[])
             FILE *reporte = fopen(nombreArchivo, "w+");
             if (reporte == NULL)
             {
-                printf("El reporte %s no existe\n", nombreArchivo); // error
+                printf("error: el reporte %s no fue creado\n", nombreArchivo); // error
                 exit(1);
             }
             list_t lista;
@@ -289,25 +293,29 @@ int main(int argc, char *argv[])
                 char **datos = pillarDatos(ruta);
                 if (datos == NULL)
                 {
-                    printf("error: el fichero %s no se encuentra", ruta);
-                    exit(1);
+                    printf("error: el fichero %s no se encuentra\n", ruta);
+                    printf("use el comando ps aux para mirar PIDs validos\n");
+                    continue;
                 }
                 list_nondup_end_insert(&lista, datos);
             }
+            printf("\n-- reporte %s generado!\n",nombreArchivo);
             display(&lista, infos, reporte);
         }
         else
         {
             if (argc > 2)
             {
-                printf("error: psinfo solo requiere un argumento");
+                printf("error: psinfo requiere un unico argumento\n");
+                printf("\n./psinfo <PID>\nejemplo:\n./psinfo 104\n");
                 exit(1);
             }
             char *ruta = ArmarRuta(argv[1]);
             char **datos = pillarDatos(ruta);
             if (datos == NULL)
             {
-                printf("error: el fichero %s no se encuentra", ruta);
+                printf("error: el fichero %s no se encuentra\n", ruta);
+                printf("use el comando ps aux para mirar PIDs validos\n");
                 exit(1);
             }
             imprimir(infos, datos, NULL);

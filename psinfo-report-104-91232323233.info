@@ -1,0 +1,7 @@
+Nombre del proceso: bash
+Estado: S (sleeping)
+Tamanio total de la imagen de memoria: 10140 kB
+   Tamanio de la memoria en la region TEXT: 708 kB
+   Tamanio de la memoria en la region DATA: 1740 kB
+   Tamanio de la memoria en la region STACK: 132 kB
+Numero de cambios de contexto realizados (voluntarios - no voluntarios): 292 - 3
