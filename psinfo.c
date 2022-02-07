@@ -199,7 +199,32 @@ char **pillarDatos(char *ruta)
 
     return datos;
 }
-
+/*
+Devuelve el numero total de caracteres que tiene un arreglo de strings desde la posicion 2, nunca se cuenta el caracter de fin de string de ninguno de los strings en el arreglo.
+*/
+int numeroLetras(char *arreglo[], int tamanoArreglo)
+{
+    int sum = 0;
+    for (int i = 2; i < tamanoArreglo; i++)
+    {
+        sum += strlen(arreglo[i]);
+    }
+    return sum;
+}
+/*
+Devuelve el nombre para el reporte de psinfo -r, el nombre será escrito en nombreArchivo
+*/
+char *getNombreReporte(char *arreglo[], int tamanoArreglo, char nombreArchivo[])
+{
+    strcpy(nombreArchivo, "psinfo-report");
+    for (int i = 2; i < tamanoArreglo; i++)
+    {
+        strcat(nombreArchivo, "-");
+        strcat(nombreArchivo, arreglo[i]);
+    }
+    strcat(nombreArchivo, ".info");
+    return (nombreArchivo);
+}
 int main(int argc, char *argv[])
 {
     char *infos[80] = {"Nombre del proceso: ",
@@ -237,6 +262,7 @@ int main(int argc, char *argv[])
                 }
                 list_nondup_end_insert(&lista, datos);
             }
+            printf("\n-- Informacion recolectada!");
             display(&lista, infos, NULL);
         }
         else if (strcmp(argv[1], "-r") == 0)
@@ -246,6 +272,29 @@ int main(int argc, char *argv[])
                 printf("error: psinfo -r necesita argumentos");
                 exit(1);
             }
+            int lenNombres = numeroLetras(argv, argc); // psinfo-report-10898-1342.info
+            char nombreArchivo[13 + argc + lenNombres + 5 + 1];
+            getNombreReporte(argv, argc, nombreArchivo);
+            FILE *reporte = fopen(nombreArchivo, "w+");
+            if (reporte == NULL)
+            {
+                printf("El reporte %s no existe\n", nombreArchivo); // error
+                exit(1);
+            }
+            list_t lista;
+            list_init(&lista);
+            for (int i = 2; i < argc; i++)
+            {
+                char *ruta = ArmarRuta(argv[i]);
+                char **datos = pillarDatos(ruta);
+                if (datos == NULL)
+                {
+                    printf("error: el fichero %s no se encuentra", ruta);
+                    exit(1);
+                }
+                list_nondup_end_insert(&lista, datos);
+            }
+            display(&lista, infos, reporte);
         }
         else
         {
