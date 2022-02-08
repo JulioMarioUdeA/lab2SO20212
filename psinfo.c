@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
             {
                 char *ruta = ArmarRuta(argv[i]);
                 char **datos = pillarDatos(ruta);
-                if (datos == NULL)
+                if (strstr(datos[0],"no data") != NULL)
                 {
                     printf("error: el fichero %s no se encuentra\n", ruta);
                     printf("use el comando ps aux para mirar PIDs validos\n");
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
             {
                 char *ruta = ArmarRuta(argv[i]);
                 char **datos = pillarDatos(ruta);
-                if (datos == NULL)
+                if (strstr(datos[0],"no data") != NULL)
                 {
                     printf("error: el fichero %s no se encuentra\n", ruta);
                     printf("use el comando ps aux para mirar PIDs validos\n");
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
             }
             char *ruta = ArmarRuta(argv[1]);
             char **datos = pillarDatos(ruta);
-            if (datos == NULL)
+            if (strstr(datos[0],"no data") != NULL)
             {
                 printf("error: el fichero %s no se encuentra\n", ruta);
                 printf("use el comando ps aux para mirar PIDs validos\n");

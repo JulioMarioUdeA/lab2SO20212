@@ -50,7 +50,8 @@ int list_nondup_end_insert(list_t *list, char **datos)
 /*
 esta funcion imprime en reporte la concatenacion de cada uno de los elementos de infos con
 cada uno de los elementos de datos. si reporte es null imprime en la salida estandar, si pid
-es diferente de null no lo imprime pero si la demas informacion de infos y datos.
+es null no lo imprime y si es diferente de null lo imprime y ademas en ambos casos imrpime
+la demas informacion de infos y datos.
 */
 void imprimir(char **infos, char **datos, FILE *reporte, char *pid)
 {
@@ -136,7 +137,8 @@ int limpiarSaltoln(char *line)
 /*
 este metodo devuelve el dato limpio del parametro line.
 el dato limpio es el dato que hay despues del caracter ":" en line y que no 
-contiene espacion ni saltos de linea.
+contiene espacios por la derecha e izquieda ni contiene saltos de linea.
+ejemplo:para la linea '<\tab>Vmsize: 140 kb<\n>' devuelve '140 kb'.
 */
 char *getDatoLimpio(char *linea)
 {
@@ -164,10 +166,10 @@ char *getDatoLimpio(char *linea)
 }
 /*
 este metodo va a la ruta especificada por el parametro ruta y extrae los datos de interes que son
-Name, State, VmSize, VmExe, VmData, VmStk, nonvoluntary_ctxt_switches, voluntary_ctxt_switches.
+Name, State, VmSize, VmExe, VmData, VmStk, voluntary_ctxt_switches, nonvoluntary_ctxt_switches.
 devuelve un vector con los datos en ese orden y con un null en la ultima posicion.
-si la ruta no existe el vector que devuelve contendrá en todas las posiciones el strig "no data"
-excepto en la ultima posicion que igual tendrá un null
+si la ruta no existe el vector que devuelve contendrá en todas las posiciones el string "no data"
+excepto en la ultima posicion que igual tendrá un null.
 */
 char **pillarDatos(char *ruta)
 {
