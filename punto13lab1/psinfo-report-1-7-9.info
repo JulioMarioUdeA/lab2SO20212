@@ -1,0 +1,30 @@
+
+Pid: 1
+Name:	init
+State:	S (sleeping)
+VmSize:	    1744 kB
+VmData:	     288 kB
+VmStk:	     132 kB
+VmExe:	     948 kB
+voluntary_ctxt_switches:	71
+nonvoluntary_ctxt_switches:	0
+
+Pid: 7
+Name:	init
+State:	S (sleeping)
+VmSize:	    1764 kB
+VmData:	     308 kB
+VmStk:	     132 kB
+VmExe:	     948 kB
+voluntary_ctxt_switches:	1
+nonvoluntary_ctxt_switches:	0
+
+Pid: 9
+Name:	bash
+State:	S (sleeping)
+VmSize:	   10188 kB
+VmData:	    1788 kB
+VmStk:	     132 kB
+VmExe:	     708 kB
+voluntary_ctxt_switches:	502
+nonvoluntary_ctxt_switches:	3

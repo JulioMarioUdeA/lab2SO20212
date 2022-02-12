@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
                     printf("use el comando ps aux para mirar PIDs validos\n");
                     // continue;
                 }
+                free(ruta);
                 list_nondup_end_insert(&lista, datos);
             }
             printf("\n-- Informacion recolectada!\n");
@@ -76,6 +77,7 @@ int main(int argc, char *argv[])
                     printf("use el comando ps aux para mirar PIDs validos\n");
                     // continue;
                 }
+                free(ruta);
                 list_nondup_end_insert(&lista, datos);
             }
             printf("\n-- reporte %s generado!\n", nombreArchivo);
@@ -95,8 +97,10 @@ int main(int argc, char *argv[])
             {
                 printf("error: el fichero %s no se encuentra\n", ruta);
                 printf("use el comando ps aux para mirar PIDs validos\n");
+                free(ruta);
                 exit(1);
             }
+            free(ruta);
             imprimir(infos, datos, NULL, NULL);
             exit(0);
         }

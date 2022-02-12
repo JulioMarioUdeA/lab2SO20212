@@ -69,6 +69,19 @@ void imprimir(char **infos, char **datos, FILE *reporte, char *pid)
         fprintf(salida, "%s%s\n", infos[i], datos[i]);
     }
     fprintf(salida, "%s%s - %s\n", infos[6], datos[6], datos[7]);
+    liberar(datos);
+}
+/*
+libera la memoria dinámica de la estructura datos. este metodo se usa
+en el metodo imprimir ya que tal metodo es donde acaba la vida util 
+de el array que se quiere imprimir.
+*/
+void liberar(char **datos){
+    for (int i = 0; i < 9; i++)
+    {
+        free(datos[i]);
+    }
+    free(datos);
 }
 /*
 This function simply print the elements of the list. usa el metodo imprimir(params)
